@@ -1,0 +1,637 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>面试必备-Linux命令56问 | 雪の亡霊</title><meta name="author" content="西行寺幽幽子"><meta name="copyright" content="西行寺幽幽子"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#7B73BE"><meta name="description" content="1. 查看整机系统性能 TOP的指令？      ​    使用top命令的话，重点关注的是 %CPU、%MEM 、load average 三个指标     ​    在这个命令下，按1的话，可以看到每个CPU的占用情况     ​    uptime：系统性能命令的精简版     ​    参考：https:&#x2F;&#x2F;www.jb51.net&#x2F;article&#x2F;135852.htm      ​">
+<meta property="og:type" content="website">
+<meta property="og:title" content="面试必备-Linux命令56问">
+<meta property="og:url" content="https://yuyuko-c.github.io/assets/Programmer-interview-Q&A-3.html">
+<meta property="og:site_name" content="雪の亡霊">
+<meta property="og:description" content="1. 查看整机系统性能 TOP的指令？      ​    使用top命令的话，重点关注的是 %CPU、%MEM 、load average 三个指标     ​    在这个命令下，按1的话，可以看到每个CPU的占用情况     ​    uptime：系统性能命令的精简版     ​    参考：https:&#x2F;&#x2F;www.jb51.net&#x2F;article&#x2F;135852.htm      ​">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tse3-mm.cn.bing.net/th/id/OIP-C.o2GaQOb9UbzNIrWO3S7hWwHaDt?pid=ImgDet&rs=1">
+<meta property="article:published_time" content="2022-11-11T14:55:30.000Z">
+<meta property="article:modified_time" content="2023-03-09T14:14:37.195Z">
+<meta property="article:author" content="西行寺幽幽子">
+<meta property="article:tag" content="面试">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tse3-mm.cn.bing.net/th/id/OIP-C.o2GaQOb9UbzNIrWO3S7hWwHaDt?pid=ImgDet&rs=1"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://yuyuko-c.github.io/assets/Programmer-interview-Q&amp;A-3"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '面试必备-Linux命令56问',
+  isPost: false,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2023-03-09 22:14:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#7B73BE')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#7B73BE')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/assets/yuyuko_avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url('/assets/yuyuko_top_img.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">雪の亡霊</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="page-site-info"><h1 id="site-title">面试必备-Linux命令56问</h1></div></header><main class="layout" id="content-inner"><div id="page"><div id="article-container"><h2 id="1-查看整机系统性能-TOP的指令？"><a href="#1-查看整机系统性能-TOP的指令？" class="headerlink" title="1. 查看整机系统性能 TOP的指令？"></a>1. 查看整机系统性能 TOP的指令？</h2><p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934093640/image-20200326162329550.png" alt="img">  </p>
+<ul>
+<li><p>​    使用top命令的话，重点关注的是 %CPU、%MEM 、load average 三个指标   </p>
+</li>
+<li><p>​    在这个命令下，按1的话，可以看到每个CPU的占用情况   </p>
+</li>
+<li><p>​    uptime：系统性能命令的精简版   </p>
+</li>
+<li><p>​    参考：<a target="_blank" rel="noopener" href="https://www.jb51.net/article/135852.htm">https://www.jb51.net/article/135852.htm</a>    </p>
+</li>
+<li><p>​    第一行是任务队列信息(系统运行状态及平均负载)，与uptime命令结果相同   </p>
+</li>
+<li><p>​    up部分的字段信息代表了当前系统的运行时间，即未重启时间，时间越长系统越稳定   </p>
+</li>
+<li><p>​    load average 任务队列的平均长度   </p>
+<ul>
+<li>​     单核情况下，1.0为满负荷，超过1为超负荷，理想值为0.7        </li>
+<li>​     多核情况下，CPU核数*0.7&#x3D;理想负荷</li>
+</ul>
+</li>
+<li><p>​    第二行是tasks任务进程相关信息   </p>
+</li>
+<li><p>​    包括了进程总数、正在运行的进程数、睡眠进程数、停止进程数和僵尸进程数(zombie)   </p>
+</li>
+<li><p>​    第三行是CPU相关信息，如果是多核CPU，按数字1可显示各核CPU信息，此时1行将转为Cpu核数行，数字1可以来回切换   </p>
+<ul>
+<li>​     us 用户空间占用CPU百分比，例如：Cpu(s): 12.7%us        </li>
+<li>​     sy 内核空间占用CPU百分比，例如：8.4%sy        </li>
+<li>​     ni 用户进程空间内改变过优先级的进程占用CPU百分比，例如：0.0%ni        </li>
+<li>​     id 空闲CPU百分比，例如：77.1%id        </li>
+<li>​     wa 等待输入输出的CPU时间百分比，例如：0.0%wa        </li>
+<li>​     hi CPU服务于硬件中断所耗费的时间总额，例如：0.0%hi        </li>
+<li>​     si CPU服务软中断所耗费的时间总额，例如：1.8%si        </li>
+<li>​     st Steal time 虚拟机被hypervisor偷去的CPU时间（如果当前处于一个hypervisor下的vm，实际上hypervisor也是要消耗一部分CPU处理时间的）</li>
+</ul>
+</li>
+<li><p>​    第四行是内存相关信息（Mem: 12<em><strong>36k total, 12</strong></em>52k used, 139884k free, 64564k buffers）   </p>
+<ul>
+<li>​     用作内核缓存的内存量，例如：64564k buffers</li>
+</ul>
+</li>
+<li><p>​    第五行是Swap 交换分区相关信息（Swap: 2097144k total, 151016k used, 1946128k free, 3120236k cached）   </p>
+<ul>
+<li>​     缓冲的交换区总量，3120236k cached</li>
+</ul>
+</li>
+<li><p>​    进程信息   </p>
+<ul>
+<li><p>​      在top命令中按f按可以查看显示的列信息，按对应字母来开启&#x2F;关闭列，大写字母表示开启，小写字母表示关闭。带*号的是默认列。     </p>
+<ul>
+<li>​       按f进入列表后，通过空格来选定要显示哪些列</li>
+</ul>
+<p>​      A: PID &#x3D; (Process Id) 进程Id； E: USER &#x3D; (User Name) 进程所有者的用户名； H: PR &#x3D; (Priority) 优先级 I: NI &#x3D; (Nice value) nice值。负值表示高优先级，正值表示低优先级 O: VIRT &#x3D; (Virtual Image (kb)) 进程使用的虚拟内存总量，单位kb。VIRT&#x3D;SWAP+RES Q: RES &#x3D; (Resident size (kb)) 进程使用的、未被换出的物理内存大小，单位kb。RES&#x3D;CODE+DATA T: SHR &#x3D; (Shared Mem size (kb)) 共享内存大小，单位kb W: S &#x3D; (Process Status) 进程状态。D&#x3D;不可中断的睡眠状态,R&#x3D;运行,S&#x3D;睡眠,T&#x3D;跟踪&#x2F;停止,Z&#x3D;僵尸进程 K: %CPU &#x3D; (CPU usage) 上次更新到现在的CPU时间占用百分比 N: %MEM &#x3D; (Memory usage (RES)) 进程使用的物理内存百分比 M: TIME+ &#x3D; (CPU Time, hundredths) 进程使用的CPU时间总计，单位1&#x2F;100秒 b: PPID &#x3D; (Parent Process Pid) 父进程Id c: RUSER &#x3D; (Real user name) d: UID &#x3D; (User Id) 进程所有者的用户id f: GROUP &#x3D; (Group Name) 进程所有者的组名 g: TTY &#x3D; (Controlling Tty) 启动进程的终端名。不是从终端启动的进程则显示为 ? j: P &#x3D; (Last used cpu (SMP)) 最后使用的CPU，仅在多CPU环境下有意义 p: SWAP &#x3D; (Swapped size (kb)) 进程使用的虚拟内存中，被换出的大小，单位kb l: TIME &#x3D; (CPU Time) 进程使用的CPU时间总计，单位秒 r: CODE &#x3D; (Code size (kb)) 可执行代码占用的物理内存大小，单位kb s: DATA &#x3D; (Data+Stack size (kb)) 可执行代码以外的部分(数据段+栈)占用的物理内存大小，单位kb u: nFLT &#x3D; (Page Fault count) 页面错误次数 v: nDRT &#x3D; (Dirty Pages count) 最后一次写入到现在，被修改过的页面数 y: WCHAN &#x3D; (Sleeping in Function) 若该进程在睡眠，则显示睡眠中的系统函数名 z: Flags &#x3D; (Task Flags &lt;sched.h&gt;) 任务标志，参考 sched.h X: COMMAND &#x3D; (Command name&#x2F;line) 命令名&#x2F;命令行</p>
+</li>
+</ul>
+</li>
+<li><p>​    命令选项   </p>
+<ul>
+<li>​     -b：以批处理模式操作； -c：显示完整的治命令； -d：屏幕刷新间隔时间； -I：忽略失效过程； -s：保密模式； -S：累积模式； -i&lt;时间&gt;：设置间隔时间； -u&lt;用户名&gt;：指定用户名； -p&lt;进程号&gt;：指定进程； -n&lt;次数&gt;：循环显示的次数。</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-查看CPU性能的指令？vmstat？"><a href="#2-查看CPU性能的指令？vmstat？" class="headerlink" title="2. 查看CPU性能的指令？vmstat？"></a>2. 查看CPU性能的指令？vmstat？</h2><ul>
+<li>查看CPU（包含但是不限于）    </li>
+<li>查看额外   </li>
+<li>​     查看所有CPU核信息：mpstat -p ALL 2        </li>
+<li>​     每个进程使用CPU的用量分解信息：pidstat -u 1 -p 进程编号</li>
+</ul>
+<p>  命令格式：vmstat -n 2 3 </p>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934093604/image-20200326162803165.png" alt="img">  </p>
+<p>  一般vmstat工具的使用是通过两个数字参数来完成的，第一个参数是采样的时间间隔数（单位秒），第二个参数是采样的次数 </p>
+<p>  procs  </p>
+<p>  r：运行和等待的CPU时间片的进程数，原则上1核的CPU的运行队列不要超过2，整个系统的运行队列不超过总核数的2倍，否则代表系统压力过大，我们看蘑菇博客测试服务器，能发现都超过了2，说明现在压力过大 </p>
+<p>  b：等待资源的进程数，比如正在等待磁盘I&#x2F;O、网络I&#x2F;O等 </p>
+<p>  cpu  </p>
+<p>  us：用户进程消耗CPU时间百分比，us值高，用户进程消耗CPU时间多，如果长期大于50%，优化程序 </p>
+<p>  sy：内核进程消耗的CPU时间百分比 </p>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934093592/image-20200326164521263.png" alt="img">  </p>
+<p>  us + sy 参考值为80%，如果us + sy 大于80%，说明可能存在CPU不足，从上面的图片可以看出，us + sy还没有超过百分80，因此说明蘑菇博客的CPU消耗不是很高 </p>
+<p>  id：处于空闲的CPU百分比 </p>
+<p>  wa：系统等待IO的CPU时间百分比 </p>
+<p>  st：来自于一个虚拟机偷取的CPU时间比 </p>
+<h2 id="3-查看内存使用情况的指令？free？"><a href="#3-查看内存使用情况的指令？free？" class="headerlink" title="3. 查看内存使用情况的指令？free？"></a>3. 查看内存使用情况的指令？free？</h2><ul>
+<li>应用程序可用内存数：free -m    </li>
+<li>应用程序可用内存&#x2F;系统物理内存 &gt; 70% 内存充足    </li>
+<li>应用程序可用内存&#x2F;系统物理内存 &lt; 20% 内存不足，需要增加内存    </li>
+<li>20% &lt; 应用程序可用内存&#x2F;系统物理内存 &lt; 70%，表示内存基本够用</li>
+</ul>
+<p>  free -h：以人类能看懂的方式查看物理内存 </p>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934093604/image-20200326170217637.png" alt="img">  </p>
+<p>  free -m：以MB为单位，查看物理内存 </p>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934093596/image-20200326165815071.png" alt="img">  </p>
+<p>  free -g：以GB为单位，查看物理内存 </p>
+<h2 id="4-查看硬盘使用情况的指令？df？"><a href="#4-查看硬盘使用情况的指令？df？" class="headerlink" title="4. 查看硬盘使用情况的指令？df？"></a>4. 查看硬盘使用情况的指令？df？</h2><ul>
+<li>df查看磁盘分区的使用情况，了解磁盘总量及用量，默认单位为KB    </li>
+<li>du命令用于查看文件、目录在磁盘中占用的空间的大小   </li>
+<li>​     与ls -h不同之处在于，ls -h是查看文件或目录的实际大小，而du是查看文件或者目录在磁盘中占用的块区的大小。由于块大小为4k，且同一块中只能存放一个文件，因此当文件实际大小不足4k时，du命令的显示结果依然为4k。</li>
+</ul>
+<p>  格式：df -h &#x2F; (-h：human，表示以人类能看到的方式换算) </p>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934093640/image-20200326170318733.png" alt="img">  </p>
+<ul>
+<li>硬盘IO：iostat</li>
+</ul>
+<p>  系统慢有两种原因引起的，一个是CPU高，一个是大量IO操作 </p>
+<p>  格式：iostat -xdk 2 3 </p>
+<p>  命令参数： </p>
+<p>  -c： 显示CPU使用情况 -d： 显示磁盘使用情况 -N： 显示磁盘阵列(LVM) 信息 -n： 显示NFS 使用情况 -k： 以 KB 为单位显示 -m： 以 M 为单位显示 -t： 报告每秒向终端读取和写入的字符数和CPU的信息 -V： 显示版本信息 -x： 显示详细信息 -p：[磁盘] 显示磁盘和分区的情况 </p>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934093943/image-20200326170522559.png" alt="img">  </p>
+<p>  磁盘块设备分布： </p>
+<p>  rkB &#x2F;s：每秒读取数据量kB； </p>
+<p>  wkB&#x2F;s：每秒写入数据量kB； </p>
+<p>  svctm I&#x2F;O：请求的平均服务时间，单位毫秒 </p>
+<p>  await I&#x2F;O：请求的平均等待时间，单位毫秒，值越小，性能越好 </p>
+<p>  util：一秒钟有百分几的时间用于I&#x2F;O操作。接近100%时，表示磁盘带宽跑满，需要优化程序或者增加磁盘； </p>
+<p>  rkB&#x2F;s，wkB&#x2F;s根据系统应用不同会有不同的值，但有规律遵循：长期、超大数据读写，肯定不正常，需要优化程序读取。 </p>
+<p>  svctm的值与await的值很接近，表示几乎没有I&#x2F;O等待，磁盘性能好，如果await的值远高于svctm的值，则表示I&#x2F;O队列等待太长，需要优化程序或更换更快磁盘 </p>
+<h2 id="5-查看网络IO情况的指令？ifstat？"><a href="#5-查看网络IO情况的指令？ifstat？" class="headerlink" title="5. 查看网络IO情况的指令？ifstat？"></a>5. 查看网络IO情况的指令？ifstat？</h2><ul>
+<li>默认本地没有，下载ifstat</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934093880/image-20200326171559406.png" alt="img">  </p>
+<h2 id="6-查看机器已建立的TCP连接的指令？"><a href="#6-查看机器已建立的TCP连接的指令？" class="headerlink" title="6. 查看机器已建立的TCP连接的指令？"></a>6. 查看机器已建立的TCP连接的指令？</h2><ul>
+<li>netstat命令    </li>
+<li>其中包含了唯一标识一条连接的四元组</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934093988/1603012083908.png" alt="img">  </p>
+<h1 id="Linux常用命令"><a href="#Linux常用命令" class="headerlink" title="Linux常用命令"></a>Linux常用命令</h1><h2 id="7-有哪些常用的Linux指令？"><a href="#7-有哪些常用的Linux指令？" class="headerlink" title="7. 有哪些常用的Linux指令？"></a>7. 有哪些常用的Linux指令？</h2><ul>
+<li>文件管理：   </li>
+<li>​     ls        </li>
+<li>​     cd        </li>
+<li>​     touch        </li>
+<li>​     rm        </li>
+<li>​     mkdir        </li>
+<li>​     mv 移动文件        </li>
+<li>​     cp        </li>
+<li>​     chmod 修改权限       </li>
+<li>进程管理   </li>
+<li>​     ps 显示进程信息        </li>
+<li>​     kill 杀死进程       </li>
+<li>系统管理   </li>
+<li>​     top 系统运行信息        </li>
+<li>​     free 内存        </li>
+<li>​     vmstat cpu信息       </li>
+<li>网络通信   </li>
+<li>​     ping 测试网络连通性        </li>
+<li>​     netstat 网络相关信息</li>
+</ul>
+<h2 id="8-cd命令的作用？"><a href="#8-cd命令的作用？" class="headerlink" title="8. cd命令的作用？"></a>8. cd命令的作用？</h2><ul>
+<li>​    回到上一次所在目录</li>
+</ul>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd -</span><br></pre></td></tr></table></figure>
+
+<h2 id="9-mkdir命令的作用？"><a href="#9-mkdir命令的作用？" class="headerlink" title="9. mkdir命令的作用？"></a>9. mkdir命令的作用？</h2><ul>
+<li>​    创建多层目录</li>
+</ul>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p xiyou/dssz/meihouwang</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>​    rmdir 删除空目录</li>
+</ul>
+<h2 id="10-cp命令的作用？"><a href="#10-cp命令的作用？" class="headerlink" title="10. cp命令的作用？"></a>10. cp命令的作用？</h2><ul>
+<li>cp [选项] source dest    </li>
+<li>-r 递归复制整个文件夹</li>
+</ul>
+<h2 id="11-rm命令的作用？"><a href="#11-rm命令的作用？" class="headerlink" title="11. rm命令的作用？"></a>11. rm命令的作用？</h2><ul>
+<li>rm [选项] deleteFile</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934093937/1606709194257.png" alt="img">  </p>
+<h2 id="12-mv命令的作用？"><a href="#12-mv命令的作用？" class="headerlink" title="12. mv命令的作用？"></a>12. mv命令的作用？</h2><ul>
+<li>移动文件与重命名</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934093954/1606709249960.png" alt="img">  </p>
+<h2 id="13-cat命令的作用？"><a href="#13-cat命令的作用？" class="headerlink" title="13. cat命令的作用？"></a>13. cat命令的作用？</h2><ul>
+<li>查看文件内容</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934094091/1606709280417.png" alt="img">  </p>
+<ul>
+<li>一般用于一页能显示完的内容</li>
+</ul>
+<h2 id="14-more命令的作用？"><a href="#14-more命令的作用？" class="headerlink" title="14. more命令的作用？"></a>14. more命令的作用？</h2><ul>
+<li>文件内容分屏查看器</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934094222/1606719574958.png" alt="img">  </p>
+<ul>
+<li>less的功能类似，不过不是一次性加载整个文件，而是按照需要展示的部分来加载</li>
+</ul>
+<h2 id="15-echo命令的作用？"><a href="#15-echo命令的作用？" class="headerlink" title="15. echo命令的作用？"></a>15. echo命令的作用？</h2><ul>
+<li><p>​    输出内容到控制台   </p>
+</li>
+<li><p>​    配合参数 -e 能够输出反斜线控制的字符   </p>
+<p><img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934094258/1606719677549.png" alt="img"></p>
+</li>
+</ul>
+<h2 id="16-head和tail命令的作用？"><a href="#16-head和tail命令的作用？" class="headerlink" title="16. head和tail命令的作用？"></a>16. head和tail命令的作用？</h2><ul>
+<li>显示文件的头部和尾部</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934094244/1606719754924.png" alt="img">  </p>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934094256/1606719764876.png" alt="img">  </p>
+<h2 id="17-gt-和-gt-gt-的作用和区别？"><a href="#17-gt-和-gt-gt-的作用和区别？" class="headerlink" title="17. &gt;和&gt;&gt;的作用和区别？"></a>17. &gt;和&gt;&gt;的作用和区别？</h2><p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934094325/1606719825771.png" alt="img">  </p>
+<h2 id="18-ln命令的作用？"><a href="#18-ln命令的作用？" class="headerlink" title="18. ln命令的作用？"></a>18. ln命令的作用？</h2><ul>
+<li><p>​    软连接   </p>
+</li>
+<li><p>​    类似于快捷方式   </p>
+<p><img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934094386/1606719934509.png" alt="img">  </p>
+<p><img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934094541/1606719948770.png" alt="img"></p>
+</li>
+</ul>
+<h2 id="19-date命令的作用？"><a href="#19-date命令的作用？" class="headerlink" title="19. date命令的作用？"></a>19. date命令的作用？</h2><ul>
+<li><p>​    时间日期类   </p>
+</li>
+<li><p>​    date   </p>
+<ul>
+<li>​     显示当前时间</li>
+</ul>
+</li>
+<li><p>​    设置系统当前时间   </p>
+<p><img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934094581/1606720105949.png" alt="img"></p>
+</li>
+</ul>
+<h2 id="20-文件属性了解吗？"><a href="#20-文件属性了解吗？" class="headerlink" title="20. 文件属性了解吗？"></a>20. 文件属性了解吗？</h2><p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934094639/1606720743133.png" alt="img">  </p>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934094647/1606720753151.png" alt="img">  </p>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934094630/1606720764734.png" alt="img">  </p>
+<h2 id="21-chmod命令的作用？"><a href="#21-chmod命令的作用？" class="headerlink" title="21. chmod命令的作用？"></a>21. chmod命令的作用？</h2><ul>
+<li>改变权限</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934094690/1606720881816.png" alt="img">  </p>
+<h2 id="22-find命令的作用？"><a href="#22-find命令的作用？" class="headerlink" title="22. find命令的作用？"></a>22. find命令的作用？</h2><ul>
+<li>查找文件或者目录</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934094861/1606721003823.png" alt="img">  </p>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934094871/1606721011447.png" alt="img">  </p>
+<h2 id="23-grep命令的作用？"><a href="#23-grep命令的作用？" class="headerlink" title="23. grep命令的作用？"></a>23. grep命令的作用？</h2><ul>
+<li>过滤查找及“|”管道符</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934094959/1606721080390.png" alt="img">  </p>
+<h2 id="24-which命令的作用？"><a href="#24-which命令的作用？" class="headerlink" title="24. which命令的作用？"></a>24. which命令的作用？</h2><ul>
+<li>查找命令</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934094968/1606721101414.png" alt="img">  </p>
+<h2 id="25-tar命令的作用"><a href="#25-tar命令的作用" class="headerlink" title="25. tar命令的作用"></a>25. tar命令的作用</h2><ul>
+<li>打包</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934095040/1606721295807.png" alt="img">  </p>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934095029/1606721302262.png" alt="img">  </p>
+<h2 id="26-df命令的作用？"><a href="#26-df命令的作用？" class="headerlink" title="26. df命令的作用？"></a>26. df命令的作用？</h2><ul>
+<li>查看磁盘空间使用情况</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934095150/1606721623318.png" alt="img">  </p>
+<h2 id="27-ps命令的作用？"><a href="#27-ps命令的作用？" class="headerlink" title="27. ps命令的作用？"></a>27. ps命令的作用？</h2><ul>
+<li><p>​    查看当前系统进程状态   </p>
+</li>
+<li><p>​    常用选项   </p>
+</li>
+<li><p>​    -e 显示所有进程。 -f 全格式。 -h 不显示标题。 -l 长格式。 -w 宽输出。 -a 显示终端上的所有进程，包括其他用户的进程。 -r 只显示正在运行的进程。   </p>
+<p>​    -u 以用户为主的格式来显示程序状况。   </p>
+<p>​    -x 显示所有程序，不以终端机来区分。   </p>
+<p><img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934095126/1606721829770.png" alt="img">  </p>
+<p><img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934095258/1606721841457.png" alt="img"></p>
+</li>
+</ul>
+<h2 id="28-kill命令的作用？"><a href="#28-kill命令的作用？" class="headerlink" title="28. kill命令的作用？"></a>28. kill命令的作用？</h2><ul>
+<li>终止进程</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934095270/1606721915115.png" alt="img">  </p>
+<h2 id="29-top命令的作用？"><a href="#29-top命令的作用？" class="headerlink" title="29. top命令的作用？"></a>29. top命令的作用？</h2><ul>
+<li><p>​    查看系统健康状态   </p>
+</li>
+<li><p>​    <a target="_blank" rel="noopener" href="https://www.cnblogs.com/loved-wangwei/p/8986287.html">https://www.cnblogs.com/loved-wangwei/p/8986287.html</a>    </p>
+<p><img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934095344/image-20210107173156561.png" alt="img">  </p>
+<p><img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934095432/image-20210107173106974.png" alt="img"></p>
+</li>
+</ul>
+<h2 id="30-如何显示网络统计信息和端口占用情况？"><a href="#30-如何显示网络统计信息和端口占用情况？" class="headerlink" title="30. 如何显示网络统计信息和端口占用情况？"></a>30. 如何显示网络统计信息和端口占用情况？</h2><ul>
+<li>netstat 命令</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934095394/1606722111248.png" alt="img">  </p>
+<ul>
+<li>参数说明   </li>
+<li>​     -a     <ul>
+<li>​       显示所有套接字，包括监听的和未监听的</li>
+</ul>
+</li>
+<li>​     -t     <ul>
+<li>​       选出TCP套接字</li>
+</ul>
+</li>
+<li>​     -u     <ul>
+<li>​       选出UDP套接字</li>
+</ul>
+</li>
+<li>​     -l     <ul>
+<li>​       选出处于listen状态的连接</li>
+</ul>
+</li>
+<li>​     -n     <ul>
+<li>​       禁止使用端口的别名替代数字，比如说ssh代替22端口</li>
+</ul>
+</li>
+<li>​     -p     <ul>
+<li>​       显示连接归属的进程信息，可以查看端口被哪个进程占用</li>
+</ul>
+</li>
+<li>​     -i     <ul>
+<li>​       显示网卡信息</li>
+</ul>
+</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934095474/1606722120361.png" alt="img">  </p>
+<h2 id="31-如何查看某个端口是否被占用？"><a href="#31-如何查看某个端口是否被占用？" class="headerlink" title="31. 如何查看某个端口是否被占用？"></a>31. 如何查看某个端口是否被占用？</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat  -nlp  |  grep   xxxxx</span><br></pre></td></tr></table></figure>
+
+<h1 id="功能实现题"><a href="#功能实现题" class="headerlink" title="功能实现题"></a>功能实现题</h1><h2 id="32-如何利用linux的指令来查询一个文件的行数？"><a href="#32-如何利用linux的指令来查询一个文件的行数？" class="headerlink" title="32. 如何利用linux的指令来查询一个文件的行数？"></a>32. 如何利用linux的指令来查询一个文件的行数？</h2><ul>
+<li>wc [选项] 文件   </li>
+<li>​     -c 统计字节数        </li>
+<li>​     -l 统计行数        </li>
+<li>​     -w 统计字数        </li>
+<li>​     -m 统计字符数       </li>
+<li>一般选项不加时，默认-lcw，显示结果依次为行数、字节数、字数</li>
+</ul>
+<h2 id="33-linux下统计一个文件中每个id的出现次数？"><a href="#33-linux下统计一个文件中每个id的出现次数？" class="headerlink" title="33. linux下统计一个文件中每个id的出现次数？"></a>33. linux下统计一个文件中每个id的出现次数？</h2><ul>
+<li>举例：检查一个文件中“404”出现的次数</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934095575/1601088534075.png" alt="img">  </p>
+<ul>
+<li>grep 就是按参数进行过滤    </li>
+<li>grep -o 一条数据里面有多个相同，会统计相同的次数    </li>
+<li>grep 一条数据里面有多个相同，会统计一次次数    </li>
+<li>wc -l 见上，就是统计行数</li>
+</ul>
+<h2 id="34-Linux-在多个文件中查找字符串？"><a href="#34-Linux-在多个文件中查找字符串？" class="headerlink" title="34. Linux 在多个文件中查找字符串？"></a>34. Linux 在多个文件中查找字符串？</h2><ul>
+<li>文件不多的情况下</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934095624/1601089009261.png" alt="img">  </p>
+<ul>
+<li>文件多的情况下</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934095638/1601089065829.png" alt="img">  </p>
+<ul>
+<li>xargs 将读入的数据重新格式化，默认是将换行和空格替换为空格</li>
+</ul>
+<p>  <img src="https://uploadfiles.nowcoder.com/files/20211126/550958136_1637934095656/1601089140423.png" alt="img">  </p>
+<h2 id="35-如何查看占用cpu最多进程？"><a href="#35-如何查看占用cpu最多进程？" class="headerlink" title="35. 如何查看占用cpu最多进程？"></a>35. 如何查看占用cpu最多进程？</h2><ul>
+<li>通过以下语句获取每一列字段的含义（即标题行）</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux | head -1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>首先 ps aux能够输出所有的进程    </li>
+<li>然后，grep -v PID 命令将包含PID的标题行去掉    </li>
+<li>接着， sort -rn -k +3 ，按照第三列数据进行排序，-r是降序排序，-n是按数值进行排序，-k用来指定列    </li>
+<li>head -1 获取排序后的第一行数据</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux|grep -v PID|sort -rn -k +3|head</span><br></pre></td></tr></table></figure>
+
+<h2 id="36-如何找到-Java-进程中哪个线程占用了大量-CPU-处理时间？"><a href="#36-如何找到-Java-进程中哪个线程占用了大量-CPU-处理时间？" class="headerlink" title="36. 如何找到 Java 进程中哪个线程占用了大量 CPU 处理时间？"></a>36. 如何找到 Java 进程中哪个线程占用了大量 CPU 处理时间？</h2><ul>
+<li><p>​    首先根据上面一步能定位到PID   </p>
+</li>
+<li><p>​    接下来，利用下面的命令查看线程占用资源的情况   </p>
+<ul>
+<li><p>​      -H #Threads mode 是否开启线程模式，默认是off     </p>
+<p>​      -p # PID monitoring 只显示某个进程的信息，e.g: top -P 488 只显示进程号为488的进程信息     </p>
+<p>​      -o # sort 排序，-o fieldname ,指定要排序的字段 ,</p>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top -H -p [PID]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>对于上述结果，通过ctrl+p对结果按照cpu进行排序，得出哪个线程占用cpu最高(下面以544为例)    </li>
+<li>先将544转为16进制的220    </li>
+<li>接下来将该java进程的堆栈信息输出到一个文件</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jstack [PID] &gt; jstack.txt</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>然后在该文件中找到对应的线程ID   </li>
+<li>​     利用grep -n可以定位到nid&#x3D;0x220的行数        </li>
+<li>​     然后查询指定行附近的内容(前10行，后20行等)</li>
+</ul>
+<h2 id="37-如何找到占用内存最多的进程？"><a href="#37-如何找到占用内存最多的进程？" class="headerlink" title="37. 如何找到占用内存最多的进程？"></a>37. 如何找到占用内存最多的进程？</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps aux|grep -v PID|sort -rn -k +4|head</span><br></pre></td></tr></table></figure>
+
+<h2 id="38-磁盘不够了，如何快速找出磁盘占用最大的文件？"><a href="#38-磁盘不够了，如何快速找出磁盘占用最大的文件？" class="headerlink" title="38. 磁盘不够了，如何快速找出磁盘占用最大的文件？"></a>38. 磁盘不够了，如何快速找出磁盘占用最大的文件？</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -h * | sort -rn | head -1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>du命令可以查看文件的大小</li>
+</ul>
+<h2 id="39-找到大于某个阈值大小的文件？"><a href="#39-找到大于某个阈值大小的文件？" class="headerlink" title="39. 找到大于某个阈值大小的文件？"></a>39. 找到大于某个阈值大小的文件？</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -type f -size +10G</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查找在&#x2F;目录下文件大小大于10G的文件</li>
+</ul>
+<h2 id="40-查找某个名称或者类型的文件？"><a href="#40-查找某个名称或者类型的文件？" class="headerlink" title="40. 查找某个名称或者类型的文件？"></a>40. 查找某个名称或者类型的文件？</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name *.ppt</span><br></pre></td></tr></table></figure>
+
+<h2 id="41-查看某个文件的大小？"><a href="#41-查看某个文件的大小？" class="headerlink" title="41. 查看某个文件的大小？"></a>41. 查看某个文件的大小？</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaojianblogs/p/6697915.html">https://www.cnblogs.com/xiaojianblogs/p/6697915.html</a></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -h /usr/local/apache2/logs/access_log</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>获取某个文件夹的大小</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -sh data</span><br></pre></td></tr></table></figure>
+
+<h2 id="42-查看某log文件某个字符串的前后5行？"><a href="#42-查看某log文件某个字符串的前后5行？" class="headerlink" title="42. 查看某log文件某个字符串的前后5行？"></a>42. 查看某log文件某个字符串的前后5行？</h2><ul>
+<li>grep -n 能够将包含指定项目的行以及对应的行号显示出来</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -n &quot;b&quot; a.txt</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查找指定行附近的内容</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># 错误行定位到了8786830 下面命令能查看前20行和后10行 tail -n +8786810 err.log |head -n 30</span><br></pre></td></tr></table></figure>
+
+<h2 id="43-找到上述行中的最后一列？"><a href="#43-找到上述行中的最后一列？" class="headerlink" title="43. 找到上述行中的最后一列？"></a>43. 找到上述行中的最后一列？</h2><ul>
+<li>awk ‘{print $NF}’ 打印出最后一列    </li>
+<li>‘NR&gt;1 {print $NF}’ 能跳过第一行</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep &quot;b&quot; a.txt | awk &#x27;&#123;print $NF&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<h2 id="44-如果最后一列是10-20-10-30，那么如何统计每个数字出现的次数，比如输出210-120-1-30"><a href="#44-如果最后一列是10-20-10-30，那么如何统计每个数字出现的次数，比如输出210-120-1-30" class="headerlink" title="44. 如果最后一列是10 20 10 30，那么如何统计每个数字出现的次数，比如输出210 120 1~30"></a>44. 如果最后一列是10 20 10 30，那么如何统计每个数字出现的次数，比如输出2<del>10 1</del>20 1~30</h2><ul>
+<li>awk里面通过””来拼接字符串    </li>
+<li>xargs -n1 每行显示一个字符    </li>
+<li>uniq -c 去重，并且将出现次数带上</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep &quot;b&quot; a.txt | awk &#x27;&#123;print $NF&#125;&#x27; | xargs -n1 | sort | uniq -c | awk &#x27;&#123;print $2&quot;~&quot;$1&#125;&#x27;</span><br></pre></td></tr></table></figure>
+
+<h2 id="45-查找log的前5行，后5行？"><a href="#45-查找log的前5行，后5行？" class="headerlink" title="45. 查找log的前5行，后5行？"></a>45. 查找log的前5行，后5行？</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">head -n 5 log tail -n 5 log</span><br></pre></td></tr></table></figure>
+
+<h2 id="46-写输出数字-0-到-500-中-7-的倍数-0-7-14-21…-的命令？"><a href="#46-写输出数字-0-到-500-中-7-的倍数-0-7-14-21…-的命令？" class="headerlink" title="46. 写输出数字 0 到 500 中 7 的倍数(0 7 14 21…)的命令？"></a>46. 写输出数字 0 到 500 中 7 的倍数(0 7 14 21…)的命令？</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">seq 0 7 500</span><br></pre></td></tr></table></figure>
+
+<p>  seq 用于生成从一个数到另一个数之间的所有整数。 </p>
+<p>  用法：seq [选项]… 尾数 或：seq [选项]… 首数 尾数 或：seq [选项]… 首数 增量 尾数 </p>
+<h2 id="47-输出文件中某一行数据"><a href="#47-输出文件中某一行数据" class="headerlink" title="47. 输出文件中某一行数据"></a>47. 输出文件中某一行数据</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -n +5 | head -1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>先找到第5行以后的数据    </li>
+<li>然后通过head输出这些数据中的第一行</li>
+</ul>
+<h2 id="48-如何判断IP是否可以访问？"><a href="#48-如何判断IP是否可以访问？" class="headerlink" title="48. 如何判断IP是否可以访问？"></a>48. 如何判断IP是否可以访问？</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping ip</span><br></pre></td></tr></table></figure>
+
+<h2 id="49-如何判断某个ip的端口是否可以访问？"><a href="#49-如何判断某个ip的端口是否可以访问？" class="headerlink" title="49. 如何判断某个ip的端口是否可以访问？"></a>49. 如何判断某个ip的端口是否可以访问？</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet ip port</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>后接ctrl+]可以给端口发送数据包</li>
+</ul>
+<h2 id="50-如何用命令行请求web服务器？"><a href="#50-如何用命令行请求web服务器？" class="headerlink" title="50. 如何用命令行请求web服务器？"></a>50. 如何用命令行请求web服务器？</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://www.example.com</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>不带参数，默认是get请求</li>
+</ul>
+<h2 id="51-如何显示某个端口的TCP连接？"><a href="#51-如何显示某个端口的TCP连接？" class="headerlink" title="51. 如何显示某个端口的TCP连接？"></a>51. 如何显示某个端口的TCP连接？</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -anp | grep &quot;:8080&quot; // -t 表示过滤TCP连接</span><br></pre></td></tr></table></figure>
+
+<h2 id="52-如何统计处于各个状态的连接个数？"><a href="#52-如何统计处于各个状态的连接个数？" class="headerlink" title="52. 如何统计处于各个状态的连接个数？"></a>52. 如何统计处于各个状态的连接个数？</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -anp | awk &#x27;&#123;print $6&#125;&#x27; | sort | uniq -c | sort -n </span><br></pre></td></tr></table></figure>
+
+<h2 id="53-如何查看进程的占用的文件符情况？"><a href="#53-如何查看进程的占用的文件符情况？" class="headerlink" title="53. 如何查看进程的占用的文件符情况？"></a>53. 如何查看进程的占用的文件符情况？</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof | grep hello.c</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>lsof显示的结果，从左往右分别代表：打开该文件的程序名，进程id，用户，文件描述符，文件类型，设备，大小，iNode号，文件名。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">COMMAND   PID                      USER   FD             TYPE        DEVICE SIZE/OFF   NODE   NAME vi        27940                    hyb    7u      REG               8,15     16384     137573 /home/hyb/.1.txt.swp</span><br></pre></td></tr></table></figure>
+
+<h2 id="54-less和vim如何查看日志并寻找关键字？"><a href="#54-less和vim如何查看日志并寻找关键字？" class="headerlink" title="54. less和vim如何查看日志并寻找关键字？"></a>54. less和vim如何查看日志并寻找关键字？</h2><h3 id="less"><a href="#less" class="headerlink" title="less"></a>less</h3><ul>
+<li>基本参数   </li>
+<li>​     <a target="_blank" rel="noopener" href="https://www.cnblogs.com/molao-doing/articles/6541455.html">https://www.cnblogs.com/molao-doing/articles/6541455.html</a></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">b 向后翻一页 d 向后翻半页 /字符串：向下搜索“字符串”的功能 ？字符串：向上搜索“字符串”的功能 空格键 滚动一行 回车键 滚动一页 q 退出less n：重复前一个搜索（与 / 或 ？ 有关） N：反向重复前一个搜索（与 / 或 ？ 有关）</span><br></pre></td></tr></table></figure>
+
+<h2 id="vim"><a href="#vim" class="headerlink" title="vim"></a>vim</h2><ul>
+<li>&#x2F;+关键字 ，回车即可。此为从文档当前位置向下查找关键字，按n键查找关键字下一个位置，N往回找；    </li>
+<li>?+关键字，回车即可。此为从文档挡圈位置向上查找关键字，按n键向上查找关键字，N往回找；</li>
+</ul>
+<h3 id="55-vim如何删除游标所在行"><a href="#55-vim如何删除游标所在行" class="headerlink" title="55. vim如何删除游标所在行"></a>55. vim如何删除游标所在行</h3><ul>
+<li>dd删除</li>
+</ul>
+<h1 id="系统优化"><a href="#系统优化" class="headerlink" title="系统优化"></a>系统优化</h1><h2 id="56-系统卡顿，如何排查"><a href="#56-系统卡顿，如何排查" class="headerlink" title="56. 系统卡顿，如何排查"></a>56. 系统卡顿，如何排查</h2><ul>
+<li>首先通过 top -c 命令显示当前进程的运行列表    </li>
+<li>然后，按一下P按照CPU使用率进行排序，得到CPU使用率最高的进程(2609)    </li>
+<li>接着，使用 top -Hp 2609 找出这个进程下面的线程，继续按P进行排序    </li>
+<li>然后，可以找到消耗CPU最多的线程   </li>
+<li>​     此处需要将线程号转为十六进制 2854-&gt;b26       </li>
+<li>然后，导出进程快照，看看线程做了什么   </li>
+<li>​     jstack -l 2609 &gt; .&#x2F;2609.stack       </li>
+<li>再用grep查看线程在文件中做了什么   </li>
+<li>​     cat 2609.stack |grep ‘b26’ -C 8</li>
+</ul>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/assets/yuyuko_avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">西行寺幽幽子</div><div class="author-info__description">愿于春日樱下死, 阴历二月满月时</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuyuko-C"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/yuyuko-C" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1061439585@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">头像是我老婆, 养不起的那种.</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/GameFramework-6/" title="Game Framework - 资源管理"><img src="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Game Framework - 资源管理"/></a><div class="content"><a class="title" href="/GameFramework-6/" title="Game Framework - 资源管理">Game Framework - 资源管理</a><time datetime="2023-03-08T18:07:13.000Z" title="发表于 2023-03-09 02:07:13">2023-03-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/DotNetDataAnalysis/" title=".Net 平台的数据分析解决方案"><img src="https://tse3-mm.cn.bing.net/th/id/OIP-C.o2GaQOb9UbzNIrWO3S7hWwHaDt?pid=ImgDet&amp;rs=1" onerror="this.onerror=null;this.src='/img/404.jpg'" alt=".Net 平台的数据分析解决方案"/></a><div class="content"><a class="title" href="/DotNetDataAnalysis/" title=".Net 平台的数据分析解决方案">.Net 平台的数据分析解决方案</a><time datetime="2023-03-01T15:12:57.000Z" title="发表于 2023-03-01 23:12:57">2023-03-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/VSCodeShortcutKey/" title="Visual Studio Code 快捷键大全"><img src="https://tse3-mm.cn.bing.net/th/id/OIP-C.o2GaQOb9UbzNIrWO3S7hWwHaDt?pid=ImgDet&amp;rs=1" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Visual Studio Code 快捷键大全"/></a><div class="content"><a class="title" href="/VSCodeShortcutKey/" title="Visual Studio Code 快捷键大全">Visual Studio Code 快捷键大全</a><time datetime="2023-02-27T02:05:27.000Z" title="发表于 2023-02-27 10:05:27">2023-02-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/GameFramework-5/" title="Game Framework - Web请求与下载"><img src="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Game Framework - Web请求与下载"/></a><div class="content"><a class="title" href="/GameFramework-5/" title="Game Framework - Web请求与下载">Game Framework - Web请求与下载</a><time datetime="2023-01-30T12:10:42.000Z" title="发表于 2023-01-30 20:10:42">2023-01-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/GameFramework-4/" title="Game Framework - 任务异步"><img src="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Game Framework - 任务异步"/></a><div class="content"><a class="title" href="/GameFramework-4/" title="Game Framework - 任务异步">Game Framework - 任务异步</a><time datetime="2022-12-08T03:57:55.000Z" title="发表于 2022-12-08 11:57:55">2022-12-08</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+    <i class="fas fa-angle-right"></i></a>
+            </div>
+            <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/C/"><span class="card-category-list-name">C#</span><span class="card-category-list-count">3</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/C/Game-Framework/"><span class="card-category-list-name">Game Framework</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/C/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"><span class="card-category-list-name">数据分析</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Noise/"><span class="card-category-list-name">Noise</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Unity/"><span class="card-category-list-name">Unity</span><span class="card-category-list-count">6</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Unity/Basic/"><span class="card-category-list-name">Basic</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Unity/Game-Framework/"><span class="card-category-list-name">Game Framework</span><span class="card-category-list-count">5</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/User-Manual/"><span class="card-category-list-name">User Manual</span><span class="card-category-list-count">1</span></a></li>
+            </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/Aspose/" style="font-size: 1.1em; color: #999">Aspose</a> <a href="/tags/C/" style="font-size: 1.1em; color: #999">C++</a> <a href="/tags/Deedle/" style="font-size: 1.1em; color: #999">Deedle</a> <a href="/tags/Game-Framework/" style="font-size: 1.5em; color: #99a9bf">Game Framework</a> <a href="/tags/HTTP/" style="font-size: 1.1em; color: #999">HTTP</a> <a href="/tags/Pandas/" style="font-size: 1.1em; color: #999">Pandas</a> <a href="/tags/Unity/" style="font-size: 1.1em; color: #999">Unity</a> <a href="/tags/VSCode/" style="font-size: 1.1em; color: #999">VSCode</a> <a href="/tags/%E5%A4%96%E6%8C%82/" style="font-size: 1.1em; color: #999">外挂`</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86/" style="font-size: 1.1em; color: #999">计算机组成原理</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" style="font-size: 1.1em; color: #999">计算机网络</a></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/03/"><span class="card-archive-list-date">三月 2023</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/02/"><span class="card-archive-list-date">二月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/01/"><span class="card-archive-list-date">一月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/12/"><span class="card-archive-list-date">十二月 2022</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2022/11/"><span class="card-archive-list-date">十一月 2022</span><span class="card-archive-list-count">10</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">15</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">51.1k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2023-04-24T17:30:51.281Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 西行寺幽幽子</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

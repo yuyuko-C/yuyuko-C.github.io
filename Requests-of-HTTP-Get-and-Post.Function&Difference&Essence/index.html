@@ -1,0 +1,248 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>HTTP的两种请求：GET和POST的作用、区别与本质 | 雪の亡霊</title><meta name="author" content="西行寺幽幽子"><meta name="copyright" content="西行寺幽幽子"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#7B73BE"><meta name="description" content="当面试的时候，考官问你：GET和POST的作用是什么，它们又有什么区别呢 这时候你该如何回答呢？  且让我们来理一理思绪~ 开始入手web项目的伙伴们基本上都开始使用GET和POST请求了，那这两种请求到底是什么东西呢，它又有什么作用？ 今天我们来细细了解一下。GET和POST作为http的两种请求，想要了解它们就得先认识一下HTTP协议。 那么什么是HTTP协议呢？ 超文本传输协议，即Hyper">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP的两种请求：GET和POST的作用、区别与本质">
+<meta property="og:url" content="https://yuyuko-c.github.io/Requests-of-HTTP-Get-and-Post.Function&Difference&Essence/index.html">
+<meta property="og:site_name" content="雪の亡霊">
+<meta property="og:description" content="当面试的时候，考官问你：GET和POST的作用是什么，它们又有什么区别呢 这时候你该如何回答呢？  且让我们来理一理思绪~ 开始入手web项目的伙伴们基本上都开始使用GET和POST请求了，那这两种请求到底是什么东西呢，它又有什么作用？ 今天我们来细细了解一下。GET和POST作为http的两种请求，想要了解它们就得先认识一下HTTP协议。 那么什么是HTTP协议呢？ 超文本传输协议，即Hyper">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://tse3-mm.cn.bing.net/th/id/OIP-C.o2GaQOb9UbzNIrWO3S7hWwHaDt?pid=ImgDet&rs=1">
+<meta property="article:published_time" content="2022-11-11T14:39:47.000Z">
+<meta property="article:modified_time" content="2022-11-14T04:00:19.528Z">
+<meta property="article:author" content="西行寺幽幽子">
+<meta property="article:tag" content="HTTP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tse3-mm.cn.bing.net/th/id/OIP-C.o2GaQOb9UbzNIrWO3S7hWwHaDt?pid=ImgDet&rs=1"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://yuyuko-c.github.io/Requests-of-HTTP-Get-and-Post.Function&amp;Difference&amp;Essence/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'HTTP的两种请求：GET和POST的作用、区别与本质',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-11-14 12:00:19'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#7B73BE')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#7B73BE')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/assets/yuyuko_avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://tse3-mm.cn.bing.net/th/id/OIP-C.o2GaQOb9UbzNIrWO3S7hWwHaDt?pid=ImgDet&amp;rs=1')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">雪の亡霊</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">HTTP的两种请求：GET和POST的作用、区别与本质</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-11-11T14:39:47.000Z" title="发表于 2022-11-11 22:39:47">2022-11-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-11-14T04:00:19.528Z" title="更新于 2022-11-14 12:00:19">2022-11-14</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/">计算机基础</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>8分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="HTTP的两种请求：GET和POST的作用、区别与本质"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>当面试的时候，考官问你：GET和POST的作用是什么，它们又有什么区别呢</p>
+<p>这时候你该如何回答呢？</p>
+<p><img src="https://img-blog.csdnimg.cn/20181117110516943.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1NlYXJjaGluX1I=,size_16,color_FFFFFF,t_70" alt="img"></p>
+<p>且让我们来理一理思绪~</p>
+<p>开始入手web项目的伙伴们基本上都开始使用GET和POST请求了，那这两种请求到底是什么东西呢，它又有什么作用？</p>
+<p>今天我们来细细了解一下。GET和POST作为http的两种请求，想要了解它们就得先认识一下HTTP协议。</p>
+<p><strong>那么什么是HTTP协议呢？</strong></p>
+<p>超文本传输协议，即Hyper Text Transfer Protocol——HTTP，是一个为了使客户端和服务器顺利进行通讯而设计的协议。</p>
+<p><strong>它是如何工作的呢？</strong></p>
+<p>HTTP在客户端与服务器之间以<strong>request-response protocol（请求-回复协议）</strong>工作。请求-回复协议主要有GET和POST两种方法。</p>
+<p><strong>那这两种方法有什么作用呢？</strong></p>
+<p>GET——从指定的服务器中获取数据</p>
+<p>POST——提交数据给指定的服务器处理</p>
+<p>接下来我们就好好了解一下这两种方法。</p>
+<p><strong>GET方法</strong></p>
+<p>概念：</p>
+<p>使用GET方法时，查询字符串以键值对的形式被附加在URL地址后面，一起发送到服务器。</p>
+<p>比如我们在CSDN搜索“什么是GET”，得到的网址如下：</p>
+<p><img src="https://img-blog.csdnimg.cn/20181116235443463.png" alt="img"></p>
+<p>从上图我们可以看到，GET方式将搜索的内容附加在URL地址后面，再从指定的服务器中获取数据显示。其格式为：</p>
+<p>分割URL和传输数据，参数之间以&amp;相连。 数据如果是英文字母&#x2F;数字，原样发送， 如果是空格，转换为+， 如果是中文&#x2F;其他字符，则直接把字符串用BASE64加密，及“%”加上“字符串的16进制ASCII码”。 </p>
+<p>特点：</p>
+<ul>
+<li>GET请求能够被缓存</li>
+<li>GET请求会保存在浏览器的浏览记录中</li>
+<li>以GET请求的URL能够保存为浏览器书签</li>
+<li>GET请求有长度限制</li>
+<li>GET请主要用于获取数据。</li>
+</ul>
+<p>从上面所述的特点可以发现，大多数的搜索引擎的搜索框用的都是GET请求，通过GET请求获取搜索到的相关数据。对于倒数第二点——GET请求有长度限制，这个想必很多人在用搜索引擎的时候也发现了：当你复制一大段文字到搜索框的时候，它只会显示少部分。这就说明了GET请求有长度限制。</p>
+<p><strong>POST方法：</strong></p>
+<p>概念：</p>
+<p>使用POST方法时，查询字符串在POST信息中单独存在，和HTTP请求一起发送到服务器。</p>
+<p>特点：</p>
+<ul>
+<li>POST请求不能被缓存下来</li>
+<li>POST请求不会保存在浏览器的浏览记录中</li>
+<li>以Post请求的URL无法保存为浏览器书签</li>
+<li>POST请求没有长度限制</li>
+</ul>
+<p>显然，POST请求的很多特点于GET请求相反，从这个对比我们可以知道，POST请求比GET请求更具有保密性以及安全性。像我们平常的登录网站的账号与密码的提交就属于POST请求。</p>
+<p>接下来我们通过一张表来具体对比一下GET和POST这两种请求。</p>
+<p><img src="https://img-blog.csdnimg.cn/20181117001021224.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1NlYXJjaGluX1I=,size_16,color_FFFFFF,t_70" alt="img"></p>
+<p>当然了， HTTP其实也不止GET和POST这两种，还有一些其他的请求方法，如下表：</p>
+<p><img src="https://img-blog.csdnimg.cn/20181117001142590.png" alt="img"></p>
+<p>想到这里，你恐怕即将要脱口而出一大段：</p>
+<ul>
+<li>GET在浏览器回退时是无害的，而POST会再次提交请求。</li>
+<li>GET产生的URL地址可以被添加为书签，而POST不可以。</li>
+<li>GET请求会被浏览器主动存储，而POST不会，除非手动设置。</li>
+<li>GET请求只能进行url编码，而POST支持多种编码方式。</li>
+<li>GET请求参数会被完整保留在浏览器历史记录里，而POST中的参数不会被保留。</li>
+<li>GET请求在URL中传送的参数是有长度限制的，而POST么有。</li>
+<li>对参数的数据类型，GET只接受ASCII字符，而POST没有限制。</li>
+<li>GET比POST更不安全，因为参数直接暴露在URL上，所以不能用来传递敏感信息。</li>
+<li>GET参数通过URL传递，POST放在Request body中。</li>
+</ul>
+<p> 就在你信心满满，底气十足地将一通标准答案倾倒在面试官面前的时候，你却发现对方嘴角还带着一丝丝轻笑，似乎不是很满意这个答案。</p>
+<p>难道，事情还有更进一步挖探的可能？</p>
+<p>按道理来说，上面答的已经很全面了呀，难不成还有遗漏？</p>
+<p>且让我再梳理一遍。</p>
+<p>GET和POST是什么？</p>
+<p>HTTP协议中的两种发送请求的方法。</p>
+<p>HTTP是什么？</p>
+<p>HTTP是基于TCP&#x2F;IP的关于数据如何在万维网中如何通信的协议。</p>
+<p>HTTP的底层是TCP&#x2F;IP。所以GET和POST的底层也是TCP&#x2F;IP，也就是说，<strong>GET&#x2F;POST都是TCP链接。</strong>GET和POST能做的事情是一样一样的。你要给GET加上request body，给POST带上url参数，技术上是完全行的通的。 </p>
+<p>嗯？这好像和刚才梳理的不太一样。</p>
+<p>那既然大家都是TCP链接，那为什么这两种方法特征不一？莫非在成长的路上变异了咩~</p>
+<p>等等，HTTP的底层是TCP&#x2F;IP，既然TCP没有啥不同的地方，那GET&#x2F;POST的差别会不会是HTTP协议给捣鼓出来的？</p>
+<p>那这次我们从底层出发，再来梳理梳理。</p>
+<p>首先，在咱们万维网世界里，TCP就是运输工具（如汽车），我们用TCP来运输数据。它很可靠，从来不会发生丢件少件的现象。但是，大家都是TCP链接，也就是说所有的汽车都长一样，路上全是一样的汽车。那么假如有加急的数据需要传送，若是被不急的数据给挡住路，堵车了怎么办？整个交通系统一定会瘫痪。那怎么办？</p>
+<p>这个时候就需要交通规则来约束行为。因此我们的奥义——HTTP协议，由此破壳而出。</p>
+<p>HTTP给汽车运输设定了好几个服务类别，有GET, POST, PUT, DELETE等等，</p>
+<p>HTTP规定，当执行GET请求的时候，要给汽车贴上GET的标签（设置method为GET），而且要求把传送的数据放在车顶上（url中）以方便记录。</p>
+<p>如果是POST请求，就要在车上贴上POST的标签，并把货物放在车厢里。当然，你也可以在GET的时候往车厢内偷偷藏点货物，但是这是很不光彩；也可以在POST的时候在车顶上也放一些数据，但这让人觉得傻乎乎的。</p>
+<p>显然，<strong>TCP才是GET和POST怎么实现的基本。而HTTP只是个行为准则。</strong></p>
+<p>到这里也许你如果以为可以继续作答了，那你就too simple啦~</p>
+<p><img src="https://img-blog.csdnimg.cn/20181117113853299.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1NlYXJjaGluX1I=,size_16,color_FFFFFF,t_70" alt="img"></p>
+<p>从上文的描述中我们可以知道，HTTP只是对GET和POST参数的传送渠道（url还是requrest body）提出了要求，那“标准答案”里关于参数大小的限制又是从哪来的呢？</p>
+<p>我们仔细想想，既然万维网里边有那么多运输工具，那不还得有运输公司吗？这么多种运输工具，岂不是有很多家运输公司咩?</p>
+<p>因此，在我大万维网世界中，还有另一个重要的角色：运输公司。不同的浏览器（发起http请求）和服务器（接受http请求）就是不同的运输公司。 虽然理论上，你可以在车顶上无限的堆货物（url中无限加参数）。但是运输公司可不傻，装货和卸货也是有很大成本的，他们会限制单次运输量来控制风险，数据量太大对浏览器和服务器都是很大负担。</p>
+<p>注：业界不成文的规定是，（大多数）浏览器通常都会限制url长度在2K个字节，而（大多数）服务器最多处理64K大小的url。超过的部分，恕不处理。如果你用GET服务，在request body偷偷藏了数据，不同服务器的处理方式也是不同的，有些服务器会帮你卸货，读出数据，有些服务器直接忽略，所以，虽然GET可以带request body，也不能保证一定能被接收到哦。</p>
+<p>所以，<strong>GET和POST本质上就是TCP链接，并无差别。但是由于HTTP的规定和浏览器&#x2F;服务器的限制，导致他们在应用过程中体现出一些不同。</strong> </p>
+<p>看到这里你是不是觉得自己已经明白了GET&#x2F;POST的真谛，想要夺门而去？</p>
+<p><img src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2708995907,1359823417&fm=26&gp=0.jpg" alt="img"></p>
+<p>这里，我不得不挽留一下：少年！请留步！</p>
+<p>因为我手里还攥着一个终极大boss！</p>
+<p>GET和POST还有一个重大区别，简单的说：</p>
+<p><strong>GET产生一个TCP数据包；POST产生两个TCP数据包。</strong></p>
+<p>这个怎么理解呢？</p>
+<p>实际上，对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）；</p>
+<p>而对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok（返回数据）。</p>
+<p>还是以运输车举例，贴着GET标签的运输车车跑一趟就把货送到了，而POST得先跑过去告诉服务器，说：“你准备一下，我要运货到你这里啦~”，然后再回去将货物运输到目的地。</p>
+<p>从上面的描述来看，POST需要走两趟，而GET只需要一趟，似乎GET更加的高效一些。</p>
+<p>但孔子说“因材施教”，这<strong>两种方式也因不同的运用环境而有着其各自的优势。</strong></p>
+<p>也许有些人会想要用GET来优化性能，还望大家多加谨慎一些，毕竟<strong>GET与POST都有自己的语义，不能随便混用。</strong></p>
+<p>而且在网络环境好的情况下，发一次包的时间和发两次包的时间差别基本可以无视，两种都很快。而在网络环境差的情况下，两次包的TCP在验证数据包完整性这一点上，有非常大的优点。</p>
+<p>此外，也并不是所有的浏览器都会在POST中发送两次包，像Firefox就只发送一次。</p>
+<p>所以，要想通过GET置换POST，还是要谨慎一些哟。</p>
+<p>好啦，今天的内容就到这里。</p>
+<p>关于GET和POST的作用、区别与其本质，只需要将上文中的标准答案以及文中后半部分对这两种方法本质的阐述结合来看即可。</p>
+<p>只要总结理解好，天王老子也不怕~</p>
+<p>*<strong>biu~~~~*</strong></p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/HTTP/">HTTP</a></div><div class="post_share"><div class="social-share" data-image="https://tse3-mm.cn.bing.net/th/id/OIP-C.o2GaQOb9UbzNIrWO3S7hWwHaDt?pid=ImgDet&amp;rs=1" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/Programmer-konwlege-network/"><img class="prev-cover" src="https://tse3-mm.cn.bing.net/th/id/OIP-C.o2GaQOb9UbzNIrWO3S7hWwHaDt?pid=ImgDet&amp;rs=1" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">程序员必学的计算机网络知识</div></div></a></div><div class="next-post pull-right"><a href="/Sunday-algorithm-write-by-C++/"><img class="next-cover" src="https://tse3-mm.cn.bing.net/th/id/OIP-C.o2GaQOb9UbzNIrWO3S7hWwHaDt?pid=ImgDet&amp;rs=1" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">C++sunday算法，极速定位指定进程内存特征码！</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/assets/yuyuko_avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">西行寺幽幽子</div><div class="author-info__description">愿于春日樱下死, 阴历二月满月时</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuyuko-C"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/yuyuko-C" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1061439585@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">头像是我老婆, 养不起的那种.</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/GameFramework-6/" title="Game Framework - 资源管理"><img src="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Game Framework - 资源管理"/></a><div class="content"><a class="title" href="/GameFramework-6/" title="Game Framework - 资源管理">Game Framework - 资源管理</a><time datetime="2023-03-08T18:07:13.000Z" title="发表于 2023-03-09 02:07:13">2023-03-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/DotNetDataAnalysis/" title=".Net 平台的数据分析解决方案"><img src="https://tse3-mm.cn.bing.net/th/id/OIP-C.o2GaQOb9UbzNIrWO3S7hWwHaDt?pid=ImgDet&amp;rs=1" onerror="this.onerror=null;this.src='/img/404.jpg'" alt=".Net 平台的数据分析解决方案"/></a><div class="content"><a class="title" href="/DotNetDataAnalysis/" title=".Net 平台的数据分析解决方案">.Net 平台的数据分析解决方案</a><time datetime="2023-03-01T15:12:57.000Z" title="发表于 2023-03-01 23:12:57">2023-03-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/VSCodeShortcutKey/" title="Visual Studio Code 快捷键大全"><img src="https://tse3-mm.cn.bing.net/th/id/OIP-C.o2GaQOb9UbzNIrWO3S7hWwHaDt?pid=ImgDet&amp;rs=1" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Visual Studio Code 快捷键大全"/></a><div class="content"><a class="title" href="/VSCodeShortcutKey/" title="Visual Studio Code 快捷键大全">Visual Studio Code 快捷键大全</a><time datetime="2023-02-27T02:05:27.000Z" title="发表于 2023-02-27 10:05:27">2023-02-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/GameFramework-5/" title="Game Framework - Web请求与下载"><img src="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Game Framework - Web请求与下载"/></a><div class="content"><a class="title" href="/GameFramework-5/" title="Game Framework - Web请求与下载">Game Framework - Web请求与下载</a><time datetime="2023-01-30T12:10:42.000Z" title="发表于 2023-01-30 20:10:42">2023-01-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/GameFramework-4/" title="Game Framework - 任务异步"><img src="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Game Framework - 任务异步"/></a><div class="content"><a class="title" href="/GameFramework-4/" title="Game Framework - 任务异步">Game Framework - 任务异步</a><time datetime="2022-12-08T03:57:55.000Z" title="发表于 2022-12-08 11:57:55">2022-12-08</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 西行寺幽幽子</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Game Framework - 任务异步 | 雪の亡霊</title><meta name="author" content="西行寺幽幽子"><meta name="copyright" content="西行寺幽幽子"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#7B73BE"><meta name="description" content="为什么要有异步正如E大开篇所说  为了保证玩家的体验，我们不推荐再使用同步的方式加载资源.  对于比较耗时的任务, 同步执行方法因为需要当即返回结果, 会造成主线程卡顿. 所以, 异步的处理方案同样是游戏开发中绕不开的一个槛. 异步适用于 IO 密集但计算量小的场景, 是一种绕过 IO 阻塞从而提高 CPU 利用率的解决方案. 常见的异步场景有资源加载和网络通讯.  异步的特点异步的最大特点就是不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Game Framework - 任务异步">
+<meta property="og:url" content="https://yuyuko-c.github.io/GameFramework-4/index.html">
+<meta property="og:site_name" content="雪の亡霊">
+<meta property="og:description" content="为什么要有异步正如E大开篇所说  为了保证玩家的体验，我们不推荐再使用同步的方式加载资源.  对于比较耗时的任务, 同步执行方法因为需要当即返回结果, 会造成主线程卡顿. 所以, 异步的处理方案同样是游戏开发中绕不开的一个槛. 异步适用于 IO 密集但计算量小的场景, 是一种绕过 IO 阻塞从而提高 CPU 利用率的解决方案. 常见的异步场景有资源加载和网络通讯.  异步的特点异步的最大特点就是不">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b">
+<meta property="article:published_time" content="2022-12-08T03:57:55.000Z">
+<meta property="article:modified_time" content="2023-04-16T13:01:25.617Z">
+<meta property="article:author" content="西行寺幽幽子">
+<meta property="article:tag" content="Game Framework">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://yuyuko-c.github.io/GameFramework-4/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Game Framework - 任务异步',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-04-16 21:01:25'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#7B73BE')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#7B73BE')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/assets/yuyuko_avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">雪の亡霊</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Game Framework - 任务异步</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-12-08T03:57:55.000Z" title="发表于 2022-12-08 11:57:55">2022-12-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-04-16T13:01:25.617Z" title="更新于 2023-04-16 21:01:25">2023-04-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Unity/">Unity</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Unity/Game-Framework/">Game Framework</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>15分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Game Framework - 任务异步"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="为什么要有异步"><a href="#为什么要有异步" class="headerlink" title="为什么要有异步"></a>为什么要有异步</h1><p>正如E大开篇所说</p>
+<blockquote>
+<p>为了保证玩家的体验，我们不推荐再使用同步的方式加载资源.</p>
+</blockquote>
+<p>对于比较耗时的任务, 同步执行方法因为需要当即返回结果, 会造成主线程卡顿. 所以, 异步的处理方案同样是游戏开发中绕不开的一个槛.</p>
+<p>异步适用于 IO 密集但计算量小的场景, 是一种绕过 IO 阻塞从而提高 CPU 利用率的解决方案. 常见的异步场景有资源加载和网络通讯. </p>
+<h1 id="异步的特点"><a href="#异步的特点" class="headerlink" title="异步的特点"></a>异步的特点</h1><p>异步的最大特点就是不会立刻完成, 而且是永远不会立刻完成. 任务量再小, 甚至是没有任务也不会立刻完成.</p>
+<p>异步函数要不没有返回值并需要传入回调函数, 要不返回的是此刻做事的状态. 事情的状态一般也就是三种: 未开始, 正在做, 已完成. 当返回值显示任务已完成时就可以取得成果. </p>
+<p>由于异步不能阻塞, 所以只能下发任务让其他人去执行, 同时需要派个人去盯着更新进度.</p>
+<p>因为任务不会平白无故的下放, 任务要是完成了就会有后续需要做的事情, 所以需要回调函数.</p>
+<p>既然如此, 异步编程的三大基本要素已经呼之欲出: 任务、执行者、监工.</p>
+<h1 id="GameFramework-中的异步编程"><a href="#GameFramework-中的异步编程" class="headerlink" title="GameFramework 中的异步编程"></a>GameFramework 中的异步编程</h1><h2 id="异步要素"><a href="#异步要素" class="headerlink" title="异步要素"></a>异步要素</h2><ul>
+<li>核心: <code>TaskBase</code> &#x2F; <code> ITaskAgent</code> &#x2F; <code>TaskPool</code> &#x2F; <code>ITaskAgentHelper</code></li>
+<li>辅助: <code>StartTaskStatus</code> &#x2F; <code>TaskStatus </code> &#x2F; <code>TaskInfo</code></li>
+</ul>
+<p>这里讲解一下辅助元素:</p>
+<ul>
+<li><code>StartTaskStatus</code>: Agent 开始执行任务时调用 <code>Start</code> 的返回值. 在任务开始前就对任务进行甄别, 避免无用消耗.</li>
+<li><code>TaskStatus</code>: 任务当前状态. 仅针对被执行的任务而言的三种状态: 未开始, 正在做, 已完成.</li>
+<li><code>TaskInfo</code>: 正如字面意思, 任务信息, 就是把任务的成员变量用结构体写了一遍.</li>
+</ul>
+<p>核心元素之间的关系如下图:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/yuyuko-C/BlogAsset@master/img/GameFramework-4.0.jpg" alt="GameFramework-4.0"></p>
+<ul>
+<li><code>ITaskAgent</code> 是任务负责人</li>
+<li><code>TaseBase</code> 为任务本身, 提供必要的信息与存储 <code>ITaskAgent</code> 的成果信息</li>
+<li><code>TaskPool</code> 就是黑心工厂, 里面有个 Update 回调, 不断催促 <code>ITaskAgent </code> 完成手上的活并把剩下的活都给到 <code>ITaskAgent </code></li>
+<li><code>ITaskAgent</code> 与 <code>TaseBase</code> 分别有子类, 子类是一一对应的关系; <code>TaskPool</code>不再有子类, 仅有一个泛型存在.</li>
+<li>ITaskAgentHelper 是 <code>ITaskAgent</code> 借助的工具或帮手, 作为其成员变量而存在. 在 UGF 中实现此接口实现真正的功能.</li>
+</ul>
+<p>里面还有一些内存管理方面的细节在这里就不展开了.</p>
+<p>这里 <code>TaskBase</code> 和 <code>ITaskAgent</code> 是一一对应的关系, 每个 <code>TaskBase</code> 的子类都需要专门的 <code>ITaskAgent</code> 来处理. <code>TaskBase</code> 的状态由其所属的 <code>ITaskAgent</code> 决定.</p>
+<p>E大声明了三种 <code>ITaskAgent</code>的子类, 分别处理对应的三种 <code>TaskBase</code>的子类:</p>
+<ul>
+<li><p><code>DownloadManager.DownloadAgent</code>  &lt;&#x3D;&#x3D;&gt; <code>DownloadManager.DownloadTask</code></p>
+</li>
+<li><p><code>WebRequestManager.WebRequestAgent</code>  &lt;&#x3D;&#x3D;&gt; <code>WebRequestManager.WebRequestTask</code></p>
+</li>
+<li><p><code>ResourceManager.ResourceLoader.LoadResourceAgent</code>  &lt;&#x3D;&#x3D;&gt; <code>ResourceManager.ResourceLoader.LoadResourceTaskBase</code></p>
+</li>
+</ul>
+<p>至此, Task 体系就搭建好了. 之后要使用就调用 <code>AddTask</code> 即可. 是不是感觉很简单呢?</p>
+<p>但——你是不是忘了什么重要的东西?</p>
+<h2 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h2><p><del>为了让任务的成果不付之东流, 怎么能忘了它呢!!! 还是说你就是喜欢看别人忙活, 赚不赚钱不重要？？?  杀! 人! 诛!  心!</del></p>
+<p>说回正题. 既然是任务完成的回调函数, 由执行任务的 <code>ITaskAgent</code> 来触发在合适不过了. </p>
+<p>可是 <code>ITaskAgent</code> 没有任何回调相关的信息!!!  回调在哪儿呢? 在子类中. </p>
+<p><strong>为了减少干扰项, 以下仅选择”成功”的调用链进行说明</strong></p>
+<blockquote>
+<p>在 <code>DownloadManager.DownloadAgent</code> 中回调函数是 <code>OnDownloadAgentHelperComplete</code></p>
+<p>在 <code>WebRequestManager.WebRequestAgent</code> 中回调函数是 <code>OnWebRequestAgentHelperComplete</code></p>
+<p>这些回调函数在后文将被统称为 AgentOnFunction, 意思是声明在 Agent 中的以 On 开头的回调函数.</p>
+</blockquote>
+<p>可是疑问还是没解决,  <code>ITaskAgent</code> 不做实事, 这些回调函数什么时候被触发呢? </p>
+<p>这里就轮到 ITaskAgentHelper 出场了.</p>
+<p>通过查看 AgentOnFunction 的引用会发现这些代码</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DownloadManager.DownloadAgent. 这里的 m_Helper 是 IDownloadAgentHelper</span></span><br><span class="line">m_Helper.DownloadAgentHelperComplete += OnDownloadAgentHelperComplete;</span><br><span class="line">m_Helper.DownloadAgentHelperComplete -= OnDownloadAgentHelperComplete;</span><br><span class="line"></span><br><span class="line"><span class="comment">// WebRequestManager.WebRequestAgent. 这里的 m_Helper 是 IWebRequestAgentHelper</span></span><br><span class="line">m_Helper.WebRequestAgentHelperComplete += OnWebRequestAgentHelperComplete;</span><br><span class="line">m_Helper.WebRequestAgentHelperComplete -= OnWebRequestAgentHelperComplete;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这些 Helper 的委托在后文将被统称为 IHelperEvent , 意思是声明在 ITaskAgentHelper 中暴露给外部的事件.</span></span><br></pre></td></tr></table></figure>
+
+<p>这些回调被加入了 ITaskAgentHelper 的事件之中, 而 ITaskAgentHelper 是接口, 我们也不必再去进一步跟踪了, 回调的触发者就是 ITaskAgentHelper 没错了.</p>
+<p>在 GF 中并未使用 ITaskAgentHelper , 而 ITaskAgentHelper 的访问属性为 <code>public</code> 因此应该在 UGF 中才使用到.</p>
+<p>果不其然, 在 UGF 中 <code>DownloadAgentHelperBase</code> 继承了 <code>IDownloadAgentHelper</code>; <code>WebRequestAgentHelperBase</code> 继承了 <code>IWebRequestAgentHelper</code>, 他们都使用了 Untiy 提供的 <code>UnityWebRequest</code> 来完成具体的任务. <code>DownloadAgentHelperComplete</code>  和 <code>WebRequestAgentHelperComplete</code> 就是在完成任务的时候被调用, 从而带动 <code>OnDownloadAgentHelperComplete</code> 和 <code>OnWebRequestAgentHelperComplete</code>.</p>
+<p>目前我们能看到的调用链只有短短的 “IHelperEvent &#x3D;&gt; AgentOnFunction”. 有头无尾. </p>
+<p>继续跟进下去, 我们发现 AgentOnFunction 也有调用委托.</p>
+<blockquote>
+<p><code>OnDownloadAgentHelperComplete</code> 调用了 <code>DownloadAgentSuccess</code> .</p>
+<p><code>OnWebRequestAgentHelperComplete</code> 调用了 <code>WebRequestAgentSuccess</code>.</p>
+<p><code>DownloadAgentSuccess</code> 和  <code>WebRequestAgentSuccess</code> 分别是 <code>DownloadManager.DownloadAgent</code> 和 <code>WebRequestManager.WebRequestAgent</code> 中暴露给外部的委托.  以下统称为 AgentAction, 意思是声明在 Agent 中暴露给外部的委托.</p>
+</blockquote>
+<p>而 AgentAction 又被谁加入了呢? 由于  <code>DownloadManager.DownloadAgent</code>  和 <code>WebRequestManager.WebRequestAgent</code> 均为类中类且访问权限均为 <code>private</code> 所以直接去对应的管理类看.</p>
+<blockquote>
+<p>在 <code>DownloadManager</code> 中有一个函数 <code>AddDownloadAgentHelper</code> , 创建了 <code>DownloadManager.DownloadAgent</code> 并使自身的 <code>OnDownloadAgentSuccess</code> 监听 <code>DownloadManager.DownloadAgent</code> 的 <code>DownloadAgentSuccess</code> 委托. </p>
+<p>而 <code>OnDownloadAgentSuccess</code> 又调用了 <code>DownloadManager</code> 的 <code>m_DownloadSuccessEventHandler</code> 委托. 虽然这个委托是 <code>private</code>, 但 <code>DownloadManager</code> 使用了 <code>DownloadSuccess</code> 事件将其公开出去了出去了. </p>
+<p>这个 <code>DownloadSuccess</code> 声明在 <code>IDownloadManager</code> 中, <code>DownloadManager</code>只是实现了而已.</p>
+</blockquote>
+<p><code>WebRequestManager</code> 也是同理.</p>
+<blockquote>
+<p>在 <code>WebRequestManager</code> 中有一个函数 <code>AddWebRequestAgentHelper</code> , 创建了 <code>WebRequestManager.WebRequestAgent</code> 并使自身的 <code>OnWebRequestAgentSuccess</code> 监听 <code>WebRequestManager.WebRequestAgent</code> 的 <code>WebRequestAgentSuccess</code> 委托. </p>
+<p>而 <code>OnWebRequestAgentSuccess</code> 又调用了 <code>WebRequestManager</code> 的 <code>m_WebRequestSuccessEventHandler</code> 委托. 虽然这个委托是 <code>private</code>, 但 <code>WebRequestManager</code> 使用了 <code>WebRequestSuccess</code> 事件将其公开出去了出去了. </p>
+<p>这个 <code>WebRequestSuccess</code> 声明在 <code>IWebRequestManager</code> 中, <code>WebRequestManager</code>只是实现了而已.</p>
+</blockquote>
+<p>这里  <code>OnDownloadAgentSuccess</code> 和 <code>OnWebRequestAgentSuccess</code> 因为是定义在 Manager 中以 On 开头的函数, 以下统称 ManagerOnFunction. 同理  <code>DownloadSuccess</code>  和  <code>WebRequestSuccess</code> 因为是定义在 Manager 中的事件, 以下统称 ManagerEvent .</p>
+<p>现在我们就获得了完成的调用链</p>
+<blockquote>
+<p>IHelperEvent &#x3D;&gt; AgentOnFunction &#x3D;&gt; AgentAction &#x3D;&gt; ManagerOnFunction &#x3D;&gt; ManagerEvent &#x3D;&gt; 外部回调委托.</p>
+</blockquote>
+<p>由于 Manager 是公开且唯一的, 也将任务完成后的事件暴露出来了, 我们就能定义任务完成后该做什么了.</p>
+<p>这次我们将回调函数也处理好了, 我们已经完整实现了<a href="#%E5%BC%82%E6%AD%A5%E7%9A%84%E7%89%B9%E7%82%B9">异步的特点</a>里阐述的所有要素, 但事情依然不简单. 其原因就在我上面故意漏掉的 Resource 环节里.</p>
+<h2 id="我们中出了一个叛徒"><a href="#我们中出了一个叛徒" class="headerlink" title="我们中出了一个叛徒"></a>我们中出了一个叛徒</h2><p>通过跟踪源码的调用逻辑, 这三种子类 <code>ITaskAgent</code> 的实际的调用链如下:</p>
+<ul>
+<li>Download:<br>IHelperEvent &#x3D;&gt; AgentOnFunction &#x3D;&gt; AgentAction &#x3D;&gt; ManagerOnFunction &#x3D;&gt; ManagerEvent &#x3D;&gt; 外部回调委托</li>
+<li>WebRequest:<br>IHelperEvent &#x3D;&gt; AgentOnFunction &#x3D;&gt; AgentAction &#x3D;&gt; ManagerOnFunction &#x3D;&gt; ManagerEvent &#x3D;&gt; 外部回调委托</li>
+<li>Resource:<br>IHelperEvent &#x3D;&gt; AgentOnFunction &#x3D;&gt; TaskOnFunction &#x3D;&gt; TaskCallbacks &#x3D;&gt; 外部回调委托</li>
+</ul>
+<blockquote>
+<p>Resource 环节具体表现如下:</p>
+<p><code>ILoadResourceAgentHelper</code> 中的 <code>LoadResourceAgentHelperLoadComplete</code> 调用 <code>ResourceManager.ResourceLoader.LoadResourceAgent</code> 的 <code>OnLoadResourceAgentHelperLoadComplete</code>, 随后继续调用 <code>OnAssetObjectReady</code>, 再调用了 <code>LoadResourceTaskBase</code> 的 <code>OnLoadAssetSuccess</code> . </p>
+<p>找不到的 TaskCallbacks 需要到  <code>LoadResourceTaskBase</code> 的子类中去找. 这个私有变量会在子类创建的时候传入, 里面是与 TaskOnFunction 一一对应的外部委托, 不同的 TaskOnFunction 会调用 TaskCallbacks 中的不同委托.</p>
+<p><code>ILoadResourceAgentHelper</code> 在 UGF 中被 <code>LoadResourceAgentHelperBase</code> 继承, 并在其子类中使用 Unity 提供的 <code>AssetBundle</code> 实现功能.</p>
+</blockquote>
+<p>可 Resource 的调用链为何就不同呢. 通过调用链我们能清晰的认识到, Resource 是将外部回调委托存储在了 Task 上, 其他两类则是存储在了 Manager 里. 明明都是 Task 体系, 却为何产生了这种差异?</p>
+<p>刚遇见这个问题的我简直炸裂, 在看到《StarForce》的项目演示里E大不遵守自己的规范后, 我第一时间想到的E大不遵守自己的规范, 第二是历史问题. 因为我没法解释怎么凭空产生了这么个差异.</p>
+<h3 id="不合理设计之一-回调归属问题"><a href="#不合理设计之一-回调归属问题" class="headerlink" title="不合理设计之一 : 回调归属问题"></a>不合理设计之一 : 回调归属问题</h3><p>那么, 这个回调函数究竟是放在 Task 上还是 Manager 里呢?</p>
+<p>先说结论, 我认为放在 Task 上才是正确的. 这里我得反省一下自己过分迷信E大了. 本来认为回调应该放在任务里的我, 因为跟踪的顺序是 Download &#x3D;&gt; WebRequest &#x3D;&gt; Resource, 合理化地认为将回调放在 Manager 是统一入口比较好. 而已经改变观念的我看见 Resource 的调用链有区别的第一个想到的居然是E大没遵守规范和历史问题, 完全忽略了在 Resource 链条里回调是存储在 Task 上的.</p>
+<p>从常识角度上来说, 如果要说明某任务完成后的下一步行动, 放在任务本身的说明里肯定是最好的. 而且任务还没有就有了下一步行动并不合理. </p>
+<blockquote>
+<p>注意 Task 和 Event 不同, 虽然二者都是基于委托. Event 与委托的对应早就存在, 只是等待 Event 发生. Task 不存在就有知道 Task 做完后该做什么属于违反因果律.</p>
+<p>Event 可以类比成需要触发等待的任务, 而这里的 Task 本身就是为了解决异步的等待问题, 需要立即执行.</p>
+<p><strong>此处用英文表述的指代码层面的意思, 中文的任务代表日常逻辑中的意思.</strong></p>
+</blockquote>
+<hr>
+<p>从代码的角度上来看呢?</p>
+<p>让我们试试如果将其他两个改成 Resource 模式会是怎样的.</p>
+<p>首先让我们看一下 Download 和 WebRequest 对于 Task 的使用:</p>
+<blockquote>
+<ul>
+<li><p>原版的调用链是 IHelperEvent &#x3D;&gt; AgentOnFunction &#x3D;&gt; AgentAction &#x3D;&gt; ManagerOnFunction &#x3D;&gt; ManagerEvent &#x3D;&gt; 外部回调委托</p>
+</li>
+<li><p>Task 的创建全在 Manager 之中, 也就是创建时能获取到 ManagerOnFunction</p>
+</li>
+<li><p>AgentAction 只有 Manager 在使用, 也就是 AgentAction 完全是为了调用 ManagerOnFunction</p>
+</li>
+</ul>
+</blockquote>
+<p>于是可知 TaskOnFunction 完全可以替代 AgentAction, 从而将调用链改成如下模式:</p>
+<blockquote>
+<p>IHelperEvent &#x3D;&gt; AgentOnFunction &#x3D;&gt; TaskOnFunction &#x3D;&gt; TaskCallbacks &#x3D;&gt; ManagerOnFunction &#x3D;&gt; ManagerEvent &#x3D;&gt; 外部回调委托.</p>
+</blockquote>
+<p>因为有了 TaskCallbacks, 后面的不再需要, 去掉那些多余的部分, 就变成了和 Resource 一样的调用链:</p>
+<blockquote>
+<p>IHelperEvent &#x3D;&gt; AgentOnFunction &#x3D;&gt; TaskOnFunction &#x3D;&gt; TaskCallbacks &#x3D;&gt; 外部回调委托.</p>
+</blockquote>
+<p>一个比原调用链更短且代码可读性更高的调用链. </p>
+<hr>
+<p>但是会如果是把 Resource 调用链替换成另外两个的类型, 最终就需要在一个回调入口同时适配 EntityManager &#x2F; SoundManager 和 UIManager. 至少唯一可求证的 Download  是这么做的. </p>
+<p>在 GF 中唯二使用 <code>DownloadManager</code> 执行下载函数的  <code>ResourceManager.ResourceUpdater</code> 和 <code>ResourceManager.VersionListProcessor</code> 中均对类型转换做了成功与否的判定, 从而确定是不是自己应该响应的回调, 而 Resource 逻辑下完全没有这一步. </p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ResourceManager.ResourceUpdater 中 OnDownloadSuccess 函数的代码            </span></span><br><span class="line">UpdateInfo updateInfo = e.UserData <span class="keyword">as</span> UpdateInfo;</span><br><span class="line"><span class="keyword">if</span> (updateInfo == <span class="literal">null</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ResourceManager.VersionListProcessor 中 OnDownloadSuccess 函数的代码</span></span><br><span class="line">VersionListProcessor versionListProcessor = e.UserData <span class="keyword">as</span> VersionListProcessor;</span><br><span class="line"><span class="keyword">if</span> (versionListProcessor == <span class="literal">null</span> || versionListProcessor != <span class="keyword">this</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个判断方法有一种缺陷: 无法辨别是不属于自己应该响应的回调还是传参不正确. 在 Resource 体系下就完全不会出现这种情况, 是 null 就一定是传参不正确. 不可能是自己不该响应的.</p>
+<p>再就是这种由多个地方聚拢再分流的策略对性能会产生影响. 明明每一次触发回调只有其中一个能响应, 却回调了所有监听的委托, 即使在开头就进行了判定.</p>
+<p>而且如果 Download 也是在任务建立时传入回调函数的话, ResourceManager 会变的更加简洁. </p>
+<hr>
+<h3 id="不合理设计之二-AgentOnFunction-未解之谜"><a href="#不合理设计之二-AgentOnFunction-未解之谜" class="headerlink" title="不合理设计之二 : AgentOnFunction 未解之谜"></a>不合理设计之二 : AgentOnFunction 未解之谜</h3><p>在跟踪回调中发现一个问题, 在 AgentOnFunction 中既然 <code>GameFrameworkEventArgs</code> 已经停止传递为何没回收? 这里是引用池内存泄漏了吗?</p>
+<p>这里以 <code>OnDownloadAgentHelperComplete</code> 函数举例说明</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnDownloadAgentHelperComplete</span>(<span class="params"><span class="built_in">object</span> sender, DownloadAgentHelperCompleteEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (DownloadAgentSuccess != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 这里可看到变量e已停止传递到下个层级, 且此函数不再使用变量e,为何却没对变量进行回收呢?</span></span><br><span class="line">        DownloadAgentSuccess(<span class="keyword">this</span>, e.Length);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不过最终我在 UGF 处找到了答案.</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (isError)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 省略具体实现</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 创建</span></span><br><span class="line">    DownloadAgentHelperCompleteEventArgs downloadAgentHelperCompleteEventArgs = DownloadAgentHelperCompleteEventArgs.Create((<span class="built_in">long</span>)m_UnityWebRequest.downloadedBytes);</span><br><span class="line">    <span class="comment">// 执行委托</span></span><br><span class="line">    m_DownloadAgentHelperCompleteEventHandler(<span class="keyword">this</span>, downloadAgentHelperCompleteEventArgs);</span><br><span class="line">    <span class="comment">// 回收</span></span><br><span class="line">    ReferencePool.Release(downloadAgentHelperCompleteEventArgs);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>E大将创建和回收放在了一起. 创建与回收放一起就一目了然. </p>
+<p>然后更诡异的事情出现了.</p>
+<blockquote>
+<p>这是 HelperEventAction:</p>
+<p><code>event EventHandler&lt;DownloadAgentHelperCompleteEventArgs&gt; DownloadAgentHelperComplete;</code></p>
+<p>这是 AgentAction:</p>
+<p><code>GameFrameworkAction&lt;DownloadAgent, long&gt; DownloadAgentSuccess;</code></p>
+<p>这是 ManagerEvent :</p>
+<p><code>event EventHandler&lt;DownloadSuccessEventArgs&gt; DownloadSuccess;</code></p>
+<p>这是调用链:</p>
+<p>IHelperEvent &#x3D;&gt; AgentOnFunction &#x3D;&gt; AgentAction &#x3D;&gt; ManagerOnFunction &#x3D;&gt; ManagerEvent &#x3D;&gt; 外部回调委托</p>
+</blockquote>
+<p>为何 IHelperEvent 和 ManagerEvent 都使用了 <code>EventHandler&lt;GameFrameworkEventArgs&gt;</code> , 偏偏处于二者之间的 AgentAction 改用了 <code>GameFrameworkAction</code>. 我至今也没想明白. 明明可以一直传下去却不传, 离谱.</p>
+<h2 id="TaskBase"><a href="#TaskBase" class="headerlink" title="TaskBase"></a>TaskBase</h2><p>TaskBase 就是在记录任务有关的一切信息, 包括任务下达时的信息和任务进行中的信息.</p>
+<p>只简单提三点:</p>
+<ul>
+<li>Task 有优先级设定, 与 <code>GameFrameworkModule</code> 是同等的设定.</li>
+<li><code>m_SerialId</code> 成员是任务的唯一标识, 仅在同类任务中唯一. GF 中是通过子类的静态变量自增保证唯一的.</li>
+<li><code>m_UserData</code> 会在任务结束后使用到, 具体使用与否看你自己. (不知怎么地我就不敢用 object 类型, 我好菜, 呜呜呜呜)</li>
+</ul>
+<p>但有个地方我就不太理解, 整个 GF 里关于 <code>TaskInfo</code> 的使用全都是 new TaskInfo(task.xxxx,task.xxxx,…) 甚至还用 <code>task.Done</code> 来判断 <code>TaskStatus</code> 应该显示成什么. 所以, <code>TaskStatus</code> 为什么没有成为 <code>TaskBase</code> 的成员变量呢, 我不理解, 反正我是放进去了, 然后把 <code>Task.Done</code> 删了. 还加了个 <code>bool CompareTag(string tag)</code> 函数优化性能, 再加个 <code>TaskInfo GetTaskInfo()</code> 减少工作量, 现在感觉很舒适.</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 真不知道E大写8条这么一大长串的代码累不累...</span></span><br><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> TaskInfo(workingTask.SerialId, workingTask.Tag, workingTask.Priority, workingTask.UserData, workingTask.Done ? TaskStatus.Done : TaskStatus.Doing, workingTask.Description);</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="任务与事件的对比"><a href="#任务与事件的对比" class="headerlink" title="任务与事件的对比"></a>任务与事件的对比</h1><table>
+<thead>
+<tr>
+<th>比对项</th>
+<th>Task</th>
+<th>Event</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>执行时机</td>
+<td>因任务耗时延迟执行</td>
+<td>等待事件延迟执行</td>
+</tr>
+<tr>
+<td>回调生命周期</td>
+<td>与 Task 保持一致</td>
+<td>与订阅者保持一致</td>
+</tr>
+<tr>
+<td>回调访问权限</td>
+<td>私密(仅任务发布者可知)</td>
+<td>公开(可由任何对象订阅)</td>
+</tr>
+</tbody></table>
+<h1 id="知识补充-代理模式——感谢檻鹤"><a href="#知识补充-代理模式——感谢檻鹤" class="headerlink" title="知识补充: 代理模式——感谢檻鹤"></a>知识补充: 代理模式——感谢檻鹤</h1><p>为其他对象提供一种代理以控制对这个对象的访问。在某些情况下，一个对象不适合或者不能直接引用另一个对象，而代理对象可以在客户端和目标对象之间起到中介的作用。</p>
+<ul>
+<li><p>抽象角色：通过接口或抽象类声明真实角色实现的业务方法。</p>
+</li>
+<li><p>代理角色：实现抽象角色，是真实角色的代理，通过真实角色的业务逻辑方法来实现抽象方法，并可以附加自己的操作。</p>
+</li>
+<li><p>真实角色：实现抽象角色，定义真实角色所要实现的业务逻辑，供代理角色调用。</p>
+</li>
+</ul>
+<p>这三种角色在 GF 里分别是:</p>
+<ul>
+<li>抽象角色 —— IHelper</li>
+<li>代理角色 —— <code>ITaskAgent</code></li>
+<li>真实角色 —— UGF 中的 Helper 类</li>
+</ul>
+<p>但是E大仅使用了代理模式的思想并未使用代理模式的形式. </p>
+<p>Helper 类继承了 IHelper 但 <code>ITaskAgent</code> 并未继承 IHelper. 不符合代理模式的形式, 但依然是通过抽象角色间接调用了真实角色. E大用子类变体的方式使得在保持公开方法不变的情况下巧妙地通过 IHelper 调用真实角色完成了任务. </p>
+<p>代理模式的优点是能将代理对象与真实对象被调用的目标对象分离, 能保护真实对象, 并在不破坏真实对象的基础上进行方法拓展. </p>
+<p>这种隔离性好的优点被反向利用就有了只定义接口等待外部继承实现的用法, 正因为隔离性好才让实现与使用分离成为了可能.</p>
+<p>不过讲道理, 代理类真没必要和真实类的方法强行保持一致. 这种思想非常好, 但形式有点过于鸡肋了.</p>
+<h1 id="意外收获"><a href="#意外收获" class="headerlink" title="意外收获"></a>意外收获</h1><p>在本次的探索过程中发现了一个额外的惊喜. 就是部分在 GF 中定义的 EventArgs 在 UGF 中又定义了一遍, 只不过基类从 <code>GameFrameworkEventArgs</code> 变成了 <code>GameEventArgs</code> . 因为E大要将这些事件用事件中心传出去. </p>
+<p>我在写事件中心篇的时候就说过相关情况, 当时看到基类是 <code>GameFrameworkEventArgs</code> 就认为是E大为了防止能用事件中心传出去, 我以为是E大不准备传出去, 最后依然传出去了, 只是在我还没关注到的 UGF 里(笑). 在我看来完全可以把框架事件直接作为游戏事件, 因为框架事件在 UGF 层被转换成了游戏事件. 而走事件中心无疑是让回调路径最短且最自由的做法. 从内存上来说是节约了一个静态整型变量, 从访问权限上来说并没有得到控制, 从使用上来说变得更加复杂了. 在我看来为了区分这两种类型让回调路径变长且跟踪困难还把类变得复杂并且声明了多余的类和实例化了更多的类是得不偿失的.</p>
+<h1 id="知识点图"><a href="#知识点图" class="headerlink" title="知识点图"></a>知识点图</h1><p><strong>目前 Task 体系下使用的东西对我来说超纲了, 虽然我已经尽可能的去了解了, 但因体系过于庞大短时间内没法详细去了解. 因此本篇文章的所说内容可能在认知补全后发生变动, 请知晓.</strong></p>
+<p>笔者是倾向于合理化E大的设计的, 但本篇文章中发现了太多无法合理化的设计, 所以本篇更有种吐槽的意味在里面. 如果说的伤到了E大的粉丝或者是E大本人, 还请见谅. 笔者绝非有意, 只是记录下了我无法理解的问题.</p>
+<p>这篇文章花了将我将近四天的时间去为自己的想法搜集证据. 由于不了解其中的知识点, 再加上不坚定自己的想法, 再加上跟踪难度较大, 最后把大量时间消耗在了现在看来极其简单的问题上. 我的分析逻辑和方法论是完全没问题的, 我应该坚信这一点. </p>
+<p>如果我所阐述的有问题, 请向我反馈, 一起学习一起进步.</p>
+<p><img src="https://cdn.jsdelivr.net/gh/yuyuko-C/BlogAsset@master/img/GameFramework-4.1.jpg" alt="GameFramework-4.1"></p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Game-Framework/">Game Framework</a></div><div class="post_share"><div class="social-share" data-image="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/GameFramework-5/"><img class="prev-cover" src="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Game Framework - Web请求与下载</div></div></a></div><div class="next-post pull-right"><a href="/GameFramework-3/"><img class="next-cover" src="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Game Framework - 事件中心</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/GameFramework-0/" title="Game Framework - 概述"><img class="cover" src="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-14</div><div class="title">Game Framework - 概述</div></div></a></div><div><a href="/GameFramework-2/" title="Game Framework - 内存管理"><img class="cover" src="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-21</div><div class="title">Game Framework - 内存管理</div></div></a></div><div><a href="/GameFramework-1/" title="Game Framework - 生命周期"><img class="cover" src="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-18</div><div class="title">Game Framework - 生命周期</div></div></a></div><div><a href="/GameFramework-3/" title="Game Framework - 事件中心"><img class="cover" src="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-25</div><div class="title">Game Framework - 事件中心</div></div></a></div><div><a href="/GameFramework-5/" title="Game Framework - Web请求与下载"><img class="cover" src="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-01-30</div><div class="title">Game Framework - Web请求与下载</div></div></a></div><div><a href="/GameFramework-6/" title="Game Framework - 资源管理"><img class="cover" src="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-03-09</div><div class="title">Game Framework - 资源管理</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/assets/yuyuko_avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">西行寺幽幽子</div><div class="author-info__description">愿于春日樱下死, 阴历二月满月时</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/yuyuko-C"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/yuyuko-C" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:1061439585@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">头像是我老婆, 养不起的那种.</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%9C%89%E5%BC%82%E6%AD%A5"><span class="toc-number">1.</span> <span class="toc-text">为什么要有异步</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E7%9A%84%E7%89%B9%E7%82%B9"><span class="toc-number">2.</span> <span class="toc-text">异步的特点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GameFramework-%E4%B8%AD%E7%9A%84%E5%BC%82%E6%AD%A5%E7%BC%96%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">GameFramework 中的异步编程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E6%AD%A5%E8%A6%81%E7%B4%A0"><span class="toc-number">3.1.</span> <span class="toc-text">异步要素</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0"><span class="toc-number">3.2.</span> <span class="toc-text">回调函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E4%BB%AC%E4%B8%AD%E5%87%BA%E4%BA%86%E4%B8%80%E4%B8%AA%E5%8F%9B%E5%BE%92"><span class="toc-number">3.3.</span> <span class="toc-text">我们中出了一个叛徒</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E5%90%88%E7%90%86%E8%AE%BE%E8%AE%A1%E4%B9%8B%E4%B8%80-%E5%9B%9E%E8%B0%83%E5%BD%92%E5%B1%9E%E9%97%AE%E9%A2%98"><span class="toc-number">3.3.1.</span> <span class="toc-text">不合理设计之一 : 回调归属问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E5%90%88%E7%90%86%E8%AE%BE%E8%AE%A1%E4%B9%8B%E4%BA%8C-AgentOnFunction-%E6%9C%AA%E8%A7%A3%E4%B9%8B%E8%B0%9C"><span class="toc-number">3.3.2.</span> <span class="toc-text">不合理设计之二 : AgentOnFunction 未解之谜</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TaskBase"><span class="toc-number">3.4.</span> <span class="toc-text">TaskBase</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1%E4%B8%8E%E4%BA%8B%E4%BB%B6%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="toc-number">4.</span> <span class="toc-text">任务与事件的对比</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E8%A1%A5%E5%85%85-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F%E2%80%94%E2%80%94%E6%84%9F%E8%B0%A2%E6%AA%BB%E9%B9%A4"><span class="toc-number">5.</span> <span class="toc-text">知识补充: 代理模式——感谢檻鹤</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%84%8F%E5%A4%96%E6%94%B6%E8%8E%B7"><span class="toc-number">6.</span> <span class="toc-text">意外收获</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9%E5%9B%BE"><span class="toc-number">7.</span> <span class="toc-text">知识点图</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/GameFramework-6/" title="Game Framework - 资源管理"><img src="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Game Framework - 资源管理"/></a><div class="content"><a class="title" href="/GameFramework-6/" title="Game Framework - 资源管理">Game Framework - 资源管理</a><time datetime="2023-03-08T18:07:13.000Z" title="发表于 2023-03-09 02:07:13">2023-03-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/DotNetDataAnalysis/" title=".Net 平台的数据分析解决方案"><img src="https://tse3-mm.cn.bing.net/th/id/OIP-C.o2GaQOb9UbzNIrWO3S7hWwHaDt?pid=ImgDet&amp;rs=1" onerror="this.onerror=null;this.src='/img/404.jpg'" alt=".Net 平台的数据分析解决方案"/></a><div class="content"><a class="title" href="/DotNetDataAnalysis/" title=".Net 平台的数据分析解决方案">.Net 平台的数据分析解决方案</a><time datetime="2023-03-01T15:12:57.000Z" title="发表于 2023-03-01 23:12:57">2023-03-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/VSCodeShortcutKey/" title="Visual Studio Code 快捷键大全"><img src="https://tse3-mm.cn.bing.net/th/id/OIP-C.o2GaQOb9UbzNIrWO3S7hWwHaDt?pid=ImgDet&amp;rs=1" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Visual Studio Code 快捷键大全"/></a><div class="content"><a class="title" href="/VSCodeShortcutKey/" title="Visual Studio Code 快捷键大全">Visual Studio Code 快捷键大全</a><time datetime="2023-02-27T02:05:27.000Z" title="发表于 2023-02-27 10:05:27">2023-02-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/GameFramework-5/" title="Game Framework - Web请求与下载"><img src="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Game Framework - Web请求与下载"/></a><div class="content"><a class="title" href="/GameFramework-5/" title="Game Framework - Web请求与下载">Game Framework - Web请求与下载</a><time datetime="2023-01-30T12:10:42.000Z" title="发表于 2023-01-30 20:10:42">2023-01-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/GameFramework-4/" title="Game Framework - 任务异步"><img src="https://picd.zhimg.com/v2-e8aa629dc3c0a76244b02ce23e36dc15_1440w.jpg?source=172ae18b" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Game Framework - 任务异步"/></a><div class="content"><a class="title" href="/GameFramework-4/" title="Game Framework - 任务异步">Game Framework - 任务异步</a><time datetime="2022-12-08T03:57:55.000Z" title="发表于 2022-12-08 11:57:55">2022-12-08</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 西行寺幽幽子</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script defer="defer" id="fluttering_ribbon" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-fluttering-ribbon.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
